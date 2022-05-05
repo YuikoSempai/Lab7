@@ -32,7 +32,8 @@ public class Group_counting_by_price extends AbstractCommand{
      */
     @Override
     public Respond execute(Object argument) {
-        return new Respond(
+        locker.lock();
+        Respond respond = new Respond(
                 collectionManager.getAllElements()
                 .stream()
                 .collect(groupingBy(Ticket::getPrice, Collectors.counting()))
@@ -41,6 +42,7 @@ public class Group_counting_by_price extends AbstractCommand{
                     .map(e-> e.getKey() + " " + e.getValue())
                     .collect(joining("\n"))
         );
-
+        locker.unlock();
+        return respond;
     }
 }

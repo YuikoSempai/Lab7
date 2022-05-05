@@ -38,5 +38,6 @@ public class Invoker {
         commands.put("show", new Show(collectionManager));
         commands.put("remove_by_id", new Remove_by_id(collectionManager));
         commands.put("update_id", new Update_id(collectionManager));
+        commands.put("wait", new Wait(collectionManager));
     }
 }

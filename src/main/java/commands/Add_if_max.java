@@ -26,17 +26,19 @@ public class Add_if_max extends Add{
 
     @Override
     public Respond execute(Object argument) {
+        Respond respond;
         Ticket ticket = (Ticket) argument;
         if (collectionManager.last().compareTo(ticket)>0){
             if(DBWorker.addTicket(getUsername(),ticket)){
                 Add add = new Add(collectionManager);
                 add.setUsername(getUsername());
-                return add.execute(ticket);
+                respond = add.execute(ticket);
             }
-            return new Respond("Problems with sql");
+            respond = new Respond("Problems with sql");
         }else{
             System.out.println("The object was not added");
-            return new Respond("The object was not added");
+            respond = new Respond("The object was not added");
         }
+        return respond;
     }
 }

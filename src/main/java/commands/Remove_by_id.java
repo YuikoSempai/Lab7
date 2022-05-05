@@ -30,6 +30,7 @@ public class Remove_by_id extends AbstractCommand{
      */
     @Override
     public Respond execute(Object argument) {
+        locker.lock();
         Stream<Ticket> stream = collectionManager.getAllElements().stream();
         String username = getUsername();
         Stream<Ticket> test = stream.filter(x->x.getId() == Long.parseLong((String) argument));
@@ -39,6 +40,7 @@ public class Remove_by_id extends AbstractCommand{
                 collectionManager.remove((Ticket) obj);
             }
         }
+        locker.unlock();
         return new Respond("Objects have been deleted");
     }
 }

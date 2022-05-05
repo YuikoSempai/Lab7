@@ -27,10 +27,11 @@ public class Info extends AbstractCommand {
      */
     @Override
     public Respond execute(Object argument) {
-
+        locker.lock();
         String s = "Type of Collection - TreeSet" + "\n" +
                 "Date of init - " + collectionManager.getInitTime() + "\n" +
                 "Count of object in Collection - " + collectionManager.size() + "\n";
+        locker.unlock();
         return new Respond(s);
     }
 }

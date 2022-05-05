@@ -4,7 +4,6 @@
 
 package commands;
 
-import com.sun.org.apache.regexp.internal.RE;
 import data.Ticket;
 import dbutility.DBWorker;
 import utility.CollectionManager;
@@ -13,6 +12,7 @@ import utility.Respond;
 
 public class Add extends AbstractCommand {
     final int countOfArguments = 10;
+
     /**
      * Class constructor
      *
@@ -28,12 +28,16 @@ public class Add extends AbstractCommand {
 
 
     public Respond execute(Object argument) {
+        Respond respond;
+        locker.lock();
         Ticket ticket = (Ticket) argument;
         if (DBWorker.addTicket(getUsername(), ticket)) {
             collectionManager.add(ticket);
-            return new Respond("Object added");
-        }else{
-            return new Respond("Can't add object");
+            respond = new Respond("Object added");
+        } else {
+            respond = new Respond("Can't add object");
         }
+        locker.unlock();
+        return respond;
     }
 }

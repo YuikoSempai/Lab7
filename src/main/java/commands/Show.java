@@ -28,6 +28,7 @@ public class Show extends AbstractCommand {
      */
     @Override
     public Respond execute(Object argument) {
+        locker.lock();
         StringBuilder ans = new StringBuilder();
         for (Ticket ticket : collectionManager.getAllElements()) {
             ans.append(ticket.toString()).append("\n");
@@ -37,6 +38,7 @@ public class Show extends AbstractCommand {
             ans.append("\n");
         }
         Stream<Ticket> stream = collectionManager.getAllElements().stream();
+        locker.unlock();
         return new Respond(ans.toString());
     }
 }

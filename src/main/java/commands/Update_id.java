@@ -28,11 +28,13 @@ public class Update_id extends AbstractCommand {
      */
     @Override
     public Respond execute(Object argument) {
+        locker.lock();
         for(Ticket ticket: collectionManager.getAllElements()){
             if(ticket.getId() == (Long) argument){
                 ticket.updateId();
             }
         }
+        locker.unlock();
         return new Respond("the id has been updated");
     }
     //TODO:: rework for DataBase

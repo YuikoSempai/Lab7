@@ -32,11 +32,13 @@ public class Clear extends AbstractCommand {
      */
     @Override
     public Respond execute(Object argument) {
+        locker.lock();
         for (Ticket t: collectionManager.getAllElements()){
             if(DBWorker.remove(getUsername(),t)){
                 collectionManager.remove(t);
             }
         }
+        locker.unlock();
         return new Respond("The collection has been cleared");
     }
 }

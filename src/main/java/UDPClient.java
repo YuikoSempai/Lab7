@@ -52,7 +52,7 @@ public class UDPClient {
 
 
         while (true) {
-            if(selector.select(1000)>0) {
+            if(selector.select(10000)>0) {
                 Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
                 while (iterator.hasNext()) {
                     SelectionKey key = iterator.next();

@@ -181,5 +181,6 @@ public class Validator {
         commandMap.put("show", new Command("show"));
         commandMap.put("remove_by_id", new Command("remove_by_id"));
         commandMap.put("update_id", new Command("update_id"));
+        commandMap.put("wait", new Command("wait"));
     }
 }

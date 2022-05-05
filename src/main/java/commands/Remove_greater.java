@@ -29,6 +29,7 @@ public class Remove_greater extends AbstractCommand {
      */
     @Override
     public Respond execute(Object argument) {
+        locker.lock();
         Stream<Ticket> stream = collectionManager.getAllElements().stream();
         Object[] objects = stream.filter(x -> x.compareTo((Ticket) argument) > 0).toArray();
         for(Object t: objects){
@@ -36,6 +37,7 @@ public class Remove_greater extends AbstractCommand {
                 collectionManager.remove((Ticket) t);
             }
         }
+        locker.unlock();
         return new Respond("Objects have been deleted");
     }
 }

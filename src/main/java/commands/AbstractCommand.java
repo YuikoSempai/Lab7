@@ -7,11 +7,15 @@ import commands.interfaces.CommandInterface;
 import utility.CollectionManager;
 import utility.Respond;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 
 public abstract class AbstractCommand implements CommandInterface {
     final CollectionManager collectionManager;
     final int countOfArguments = 0;
     private String username;
+    protected Lock locker = new ReentrantLock();
 
     /**
      * @param collection collection

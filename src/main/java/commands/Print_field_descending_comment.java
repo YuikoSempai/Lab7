@@ -29,7 +29,7 @@ public class Print_field_descending_comment extends AbstractCommand {
      */
     @Override
     public Respond execute(Object argument) {
-
+        locker.lock();
         List<String> commentFields = new ArrayList<>();
 
         for (Ticket ticket : collectionManager.getAllElements()) {
@@ -40,6 +40,7 @@ public class Print_field_descending_comment extends AbstractCommand {
             ans.append(commentFields.get(i)).append("\n");
         }
         ans.append("\n");
+        locker.unlock();
         return new Respond(ans.toString());
     }
 }

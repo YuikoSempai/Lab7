@@ -34,6 +34,7 @@ public class Remove_any_by_type extends AbstractCommand {
      */
     @Override
     public Respond execute(Object argument) {
+        locker.lock();
         TicketType type = (TicketType) argument;
         Stream<Ticket> stream = collectionManager.getAllElements().stream();
         String username = getUsername();
@@ -45,6 +46,7 @@ public class Remove_any_by_type extends AbstractCommand {
             }
         }
 //        stream.filter(x->x.getType().compareTo(type)==0).forEach(collectionManager::remove);
+        locker.unlock();
         return new Respond("Objects have been deleted");
     }
 }
