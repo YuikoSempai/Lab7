@@ -13,9 +13,11 @@ public class Session implements Serializable {
     public Session(String aUsername, String aPassword) {
         username = aUsername;
         password = aPassword;
+        String pepper = "123%$3";
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-384");
             if (password !=null) {
+                password += pepper;
                 password = md.digest(aPassword.getBytes(StandardCharsets.UTF_8)).toString();
             }
         } catch (NoSuchAlgorithmException e) {
