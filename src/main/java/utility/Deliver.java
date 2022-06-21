@@ -14,16 +14,16 @@ import java.nio.ByteBuffer;
 public class Deliver implements Runnable{
     private static final Logger logger = LogManager.getLogger("Server");
     static DatagramSocket datagramSocket;
-    static ByteBuffer sendingDataBuffer = ByteBuffer.allocate(10240);
+    static ByteBuffer sendingDataBuffer = ByteBuffer.allocate(65000);
     static DatagramPacket inputPacket;
-    static Respond respond;
+    Respond respond;
 
     public static void setDatagramSocket(DatagramSocket datagramSocket) {
         Deliver.datagramSocket = datagramSocket;
     }
 
-    public static void setRespond(Respond respond) {
-        Deliver.respond = respond;
+    public void setRespond(Respond respond) {
+        this.respond = respond;
     }
 
     public static void setInputPacket(DatagramPacket inputPacket) {

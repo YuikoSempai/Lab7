@@ -2,8 +2,8 @@
 
 import commands.Execute_script;
 import exceptions.ArgumentFromFileException;
-import utility.*;
 import utility.Console;
+import utility.*;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -18,31 +18,32 @@ public class UDPClient {
     static final int PORT = 50111;
     private static final Console console = new Console();
     private static final Validator validator = new Validator(console);
-    static ByteBuffer inputBuffer = ByteBuffer.allocate(10240);
-    static ByteBuffer outputBuffer = ByteBuffer.allocate(10240);
+    static ByteBuffer inputBuffer = ByteBuffer.allocate(65000);
+    static ByteBuffer outputBuffer = ByteBuffer.allocate(65000);
     static Selector selector;
     static DatagramChannel channel;
     static boolean exitStatus = false;
     static SessionWorker sessionWorker = new SessionWorker(console);
     static Session session;
+
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         selector = Selector.open();
         channel = DatagramChannel.open();
-        while (true){
+        while (true) {
             System.out.println("\t\tВведите имя пользователя");
             String username = console.nextLine();
             System.out.println("\t\tВведите пароль(поле может быть пустым)");
             String password = console.nextLine();
-            if (password.equals("")){
+            if (password.equals("")) {
                 password = null;
             }
-            session = sessionWorker.createSession(username,password);
-            if (session != null){
+            session = sessionWorker.createSession(username, password);
+            if (session != null) {
                 break;
             }
         }
         sendSession(session);
-        if(!receiveSessionStatus(session)){
+        if (!receiveSessionStatus(session)) {
             System.out.println("Authorization error");
             System.exit(1);
         }
@@ -52,7 +53,7 @@ public class UDPClient {
 
 
         while (true) {
-            if(selector.select(10000)>0) {
+            if (selector.select(10000) > 0) {
                 Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
                 while (iterator.hasNext()) {
                     SelectionKey key = iterator.next();
@@ -73,7 +74,7 @@ public class UDPClient {
                 if (exitStatus) {
                     break;
                 }
-            }else{
+            } else {
                 System.out.println("\t\tPacket lost\n");
                 channel.register(selector, SelectionKey.OP_WRITE);
             }
@@ -91,9 +92,7 @@ public class UDPClient {
         ObjectInputStream objectInputStream =
                 new ObjectInputStream(new ByteArrayInputStream(inputBuffer.array()));
         Respond respond = (Respond) objectInputStream.readObject();
-
         System.out.println(respond.answer + "\n");
-
         key.interestOps(SelectionKey.OP_WRITE);
     }
 
@@ -106,7 +105,7 @@ public class UDPClient {
         if (command != null) {
             if (command.getCommandName().equals("exit")) {
                 exitStatus = true;
-            }else {
+            } else {
                 try {
                     command.setArgument(validator.validateArgument(command));
                     if (command.getCommandName().equals("execute_script")) {
@@ -144,6 +143,7 @@ public class UDPClient {
         channel.send(outputBuffer, new InetSocketAddress(InetAddress.getLocalHost(), PORT));
         outputBuffer.clear();
     }
+
     private static boolean receiveSessionStatus(Session session) throws IOException, ClassNotFoundException {
         inputBuffer.clear();
         channel.socket().setSoTimeout(10);

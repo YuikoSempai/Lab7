@@ -32,8 +32,8 @@ public class DBWorker {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             logger.warn("Problems with SQL");
-            return false;
         }
+        return false;
     }
 
     public static boolean clear(String username) {
@@ -103,7 +103,7 @@ public class DBWorker {
         try {
             PreparedStatement st = connection.prepareStatement(addUserStatement);
             st.setString(1, session.getUsername());
-            st.setString(2, session.getPassword());
+            st.setBytes(2, session.getHashPassword());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -129,11 +129,11 @@ public class DBWorker {
         try{
             ResultSet resultSet;
             PreparedStatement st;
-            if(session.getPassword() == null){
+            if(session.getHashPassword() == null){
                 st = connection.prepareStatement(Statements.checkNullPassword.getStatement());
             }else{
                 st = connection.prepareStatement(Statements.checkPassword.getStatement());
-                st.setString(2, session.getPassword());
+                st.setBytes(2, session.getHashPassword());
             }
             st.setString(1, session.getUsername());
             resultSet = st.executeQuery();
@@ -151,14 +151,12 @@ public class DBWorker {
             if (resultSet.next()) {
                 return resultSet.getInt("nextval");
             }
-            return null;
-        } catch (SQLException throwables) {
+        } catch (SQLException throwable) {
             logger.warn("SQL problem with generating id!");
-            return null;
         }
+        return null;
     }
 
-    //TODO: update_id
     private static void setTicketStatement(PreparedStatement st, String username, Ticket ticket, String commandName)
             throws SQLException {
         PreparedStatement stmt = connection.prepareStatement(Statements.generateID.getStatement());
@@ -166,6 +164,8 @@ public class DBWorker {
         if(commandName.equals("add")) {
             ticket.setId(generateId());
             st.setLong(i++, ticket.getId());
+        }else{
+            st.setLong(i++,ticket.getId());
         }
         st.setString(i++, ticket.getName());
         st.setInt(i++, ticket.getCoordinates().getX());

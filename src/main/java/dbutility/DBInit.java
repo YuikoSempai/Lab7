@@ -1,6 +1,7 @@
 package dbutility;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 public class DBInit {
@@ -12,6 +13,10 @@ public class DBInit {
 
     public void init() throws SQLException {
         Statement st = dbConnection.createStatement();
+        ResultSet rs = null;
+        st.executeUpdate("DROP TABLE IF EXISTS tickets");
+        st.executeUpdate("DROP TABLE IF EXISTS users");
+        st.executeUpdate("DROP sequence IF EXISTS sequence");
 
         st.executeUpdate("CREATE TABLE IF NOT EXISTS tickets ("+
                 "id int PRIMARY KEY,"+
@@ -31,7 +36,7 @@ public class DBInit {
 
         st.executeUpdate("CREATE TABLE IF NOT EXISTS users ("+
                 "username varchar(255) PRIMARY KEY,"+
-                "hashPassword varchar(255) DEFAULT (NULL)"+
+                "hashPassword BYTEA DEFAULT (null)"+
                 ")");
         st.executeUpdate("CREATE SEQUENCE IF NOT EXISTS sequence START 1");
     }

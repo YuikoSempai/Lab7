@@ -19,8 +19,9 @@ public enum Statements {
     removeById("DELETE FROM tickets " +
             "WHERE user = ? AND id = ?"),
     remove("DELETE FROM tickets where " +
-            "name = ? AND xcoordinate = ? AND ycoordinate = ? AND creationDate = ? AND price = ? AND comment = ? AND " +
-            "tickettype = ? AND personBirthday = ? AND personHeight = ? AND personWeight = ? AND personPassportID = ? AND username = ?"),
+            "id = ? and name = ? AND xcoordinate = ? AND ycoordinate = ? AND creationDate = ? AND price = ? AND comment = ? AND " +
+            "tickettype = ? AND personBirthday = ? AND personHeight = ? AND personWeight = ? AND personPassportID = ? " +
+            "AND username = ?"),
     checkPassword("SELECT * FROM users WHERE username = ? AND hashpassword = ?"),
     checkUsername("SELECT * FROM users where username = ?"),
     checkTicket("SELECT FROM tickets where " +
