@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    String login = "s335150";
-    String password = "dzo415";
+    String login = "-";
+    String password = "-";
     String host = "jdbc:postgresql://pg:5432/studs";
 
     public Connection connect(){
